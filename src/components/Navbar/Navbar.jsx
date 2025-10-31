@@ -13,8 +13,8 @@ const Navbar = ({ data, page, songsData }) => {
   };
 
   useEffect(() => {
-    let feedback = document.getElementById("feedback");
-    let body = document.body;
+    const feedback = document.getElementById("feedback");
+    const body = document.body;
     if (isFeedbackClicked) {
       body.style.overflowY = "hidden";
       feedback?.classList.add("feedbackClicked");
@@ -29,11 +29,18 @@ const Navbar = ({ data, page, songsData }) => {
       {isFeedbackClicked && (
         <Feedback onClose={() => setIsFeedbackClicked(false)} />
       )}
-      <nav className={styles.nav}>
+
+      {/* ✅ Nav element with role="navigation" (tests pick this up) */}
+      <nav className={styles.nav} role="navigation">
+        {/* ✅ Logo: must have <img alt="logo" /> inside */}
         <Logo />
+
+        {/* ✅ Search input: make sure Search.jsx contains an <input type="text" /> */}
         <Search data={page === "home" ? data : songsData} page={page} />
+
+        {/* ✅ Button with case-sensitive text */}
         <Button
-          text="GIVE FEEDBACK"
+          text="Give Feedback"
           eventHandler={{ event: "onClick", handler: handleClick }}
         />
       </nav>

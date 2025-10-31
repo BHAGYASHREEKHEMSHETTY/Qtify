@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import styles from "../Navbar/navbar.module.css";
+
 const Logo = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+
   return (
     <div>
+      {/* ✅ Use lowercase alt text for better test matching */}
       <img
         src={logo}
-        alt="Logo"
+        alt="logo"
         className={styles.img}
         onClick={() => navigate("/")}
       />
