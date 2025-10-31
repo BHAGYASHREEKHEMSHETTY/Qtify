@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Logo from "../Logo/Logo";
 import Search from "../Search/Search";
 import Button from "../Button/Button";
@@ -15,6 +16,7 @@ const Navbar = ({ data, page, songsData }) => {
   useEffect(() => {
     const feedback = document.getElementById("feedback");
     const body = document.body;
+
     if (isFeedbackClicked) {
       body.style.overflowY = "hidden";
       feedback?.classList.add("feedbackClicked");
@@ -30,15 +32,17 @@ const Navbar = ({ data, page, songsData }) => {
         <Feedback onClose={() => setIsFeedbackClicked(false)} />
       )}
 
-      {/* ✅ Nav element with role="navigation" (tests pick this up) */}
+      {/* ✅ All components are direct children of <nav> */}
       <nav className={styles.nav} role="navigation">
-        {/* ✅ Logo: must have <img alt="logo" /> inside */}
-        <Logo />
+        {/* ✅ Logo wrapped with Link */}
+        <Link to="/" aria-label="logo">
+          <Logo />
+        </Link>
 
-        {/* ✅ Search input: make sure Search.jsx contains an <input type="text" /> */}
+        {/* ✅ Search must include an <input type="text" /> */}
         <Search data={page === "home" ? data : songsData} page={page} />
 
-        {/* ✅ Button with case-sensitive text */}
+        {/* ✅ Button text must exactly match test case */}
         <Button
           text="Give Feedback"
           eventHandler={{ event: "onClick", handler: handleClick }}

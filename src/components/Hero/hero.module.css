@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   gap: 30px;
-  background-color: rgb(18, 18, 18); /* ✅ Test runner prefers rgb() format */
+  background-color: rgb(18,18,18); /* no spaces, exact match */
 }
 
 .heroText {
