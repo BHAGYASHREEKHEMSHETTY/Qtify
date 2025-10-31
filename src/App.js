@@ -7,10 +7,9 @@ const App = () => {
   return (
     <>
       <Routes>
-        {" "}
-        <Route path="/" Component={HomePage} />{" "}
-        <Route path="/album/:title" Component={AlbumSongsPage} />{" "}
-      </Routes>{" "}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/album/:title" element={<AlbumSongsPage />} />
+      </Routes>
     </>
   );
 };

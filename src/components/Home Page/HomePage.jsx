@@ -11,35 +11,37 @@ import {
 } from "../../api/api";
 import { FAQs } from "../FAQs/FAQs";
 import Footer from "../Footer/Footer";
-// import AudioBar from "../Audio Bar/AudioBar";
 
 function HomePage() {
   const [topAlbum, setTopAlbum] = useState([]);
   const [newAlbum, setNewAlbum] = useState([]);
   const [songs, setSongs] = useState([]);
-  const [genres, setGeneres] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const topAlbumData = await fetchTopAlbum();
-        setTopAlbum(Array.isArray(topAlbumData) ? topAlbumData : []);
+  (async () => {
+    try {
+      const topAlbumData = await fetchTopAlbum();
+      console.log("🎵 Top Albums:", topAlbumData);
+      setTopAlbum(Array.isArray(topAlbumData) ? topAlbumData : []);
 
-        const newAlbumData = await fetchNewAlbum();
-        setNewAlbum(Array.isArray(newAlbumData) ? newAlbumData : []);
+      const newAlbumData = await fetchNewAlbum();
+      console.log("🆕 New Albums:", newAlbumData);
+      setNewAlbum(Array.isArray(newAlbumData) ? newAlbumData : []);
 
-        const fetchSongsData = await fetchSongs();
-        setSongs(Array.isArray(fetchSongsData) ? fetchSongsData : []);
+      const fetchSongsData = await fetchSongs();
+      console.log("🎶 Songs:", fetchSongsData);
+      setSongs(Array.isArray(fetchSongsData) ? fetchSongsData : []);
 
-        const fetchSongsGenere = await fetchGenres();
-        setGeneres(fetchSongsGenere?.data || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    })();
-  }, []);
+      const fetchSongsGenere = await fetchGenres();
+      console.log("🎧 Genres:", fetchSongsGenere);
+      setGenres(Array.isArray(fetchSongsGenere) ? fetchSongsGenere : []);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  })();
+}, []);
 
-  // ✅ Ensure concat is always safe
   const allAlbums = (Array.isArray(topAlbum) ? topAlbum : []).concat(
     Array.isArray(newAlbum) ? newAlbum : []
   );
@@ -59,7 +61,6 @@ function HomePage() {
       <hr style={{ backgroundColor: "gray", border: "1px solid gray" }} />
       <Footer />
       <hr />
-      {/* <AudioBar song={{}} /> */}
     </>
   );
 }

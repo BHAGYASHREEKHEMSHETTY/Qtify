@@ -4,31 +4,53 @@ import { fetchTopAlbum, fetchNewAlbum } from "../../api/api";
 import Navbar from "../Navbar/Navbar";
 import SongsHero from "../Songs Page Hero/SongsHero";
 import SongsTable from "../Table/Table";
+
 const AlbumSongsPage = () => {
-  let location = useLocation();
-  let clickedAlbum = location.state.album;
+  const location = useLocation();
+  const clickedAlbum = location?.state?.album; // safely access
   const { title } = useParams();
-  let [songs, setSongs] = useState([]);
-  let fetchSongs = async (album) => {
-    let findSong = album.find((song) => song.slug === title);
-    setSongs(findSong.songs);
+  const [songs, setSongs] = useState([]);
+
+  // Fetch songs from all albums (top + new)
+  const fetchSongs = async (albums) => {
+    const findSong = albums.find((album) => album.slug === title);
+    if (findSong && findSong.songs) {
+      setSongs(findSong.songs);
+    } else {
+      setSongs([]);
+    }
   };
 
   useEffect(() => {
-    const fetchAlbum = async () => {
-      let topAlbum = await fetchTopAlbum();
-      let newAlbum = await fetchNewAlbum();
-      let allAlbum = topAlbum.concat(newAlbum);
-      fetchSongs(allAlbum);
+    const fetchAlbumData = async () => {
+      // If songs are already passed via location, use them directly
+      if (clickedAlbum && clickedAlbum.songs) {
+        setSongs(clickedAlbum.songs);
+        return;
+      }
+
+      // Otherwise, fetch both album lists
+      const topAlbum = await fetchTopAlbum();
+      const newAlbum = await fetchNewAlbum();
+
+      const allAlbums = topAlbum.concat(newAlbum);
+      fetchSongs(allAlbums);
     };
-    fetchAlbum();
+
+    fetchAlbumData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title]);
+  }, [title, clickedAlbum]);
+
   return (
     <div>
-      <Navbar songsData={songs} page={"song"} />
+      {/* Navbar with songs info */}
+      <Navbar songsData={songs} page="song" />
+
+      {/* Display album details (image, title, etc.) */}
       <SongsHero album={clickedAlbum} />
-      <SongsTable album={clickedAlbum} />
+
+      {/* Display song list table */}
+      <SongsTable album={songs} />
     </div>
   );
 };
