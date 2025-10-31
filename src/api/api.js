@@ -5,7 +5,8 @@ const config = {
         TopAlbum: "https://qtify-backend.labs.crio.do/albums/top",
         NewAlbum: "https://qtify-backend.labs.crio.do/albums/new",
         Songs: "https://qtify-backend.labs.crio.do/songs",
-        genres: "https://qtify-backend.abs.crio.do/genres",
+        genres: "https://qtify-backend.labs.crio.do/genres",
+        
     },
 };
 

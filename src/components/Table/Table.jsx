@@ -9,17 +9,23 @@ import {
   TableRow,
 } from "@mui/material";
 import Pagination from "../Pagination/Pagination";
+
 function SongsTable({ album }) {
-  let [currentPage, setCurrentPage] = useState(1);
-  let songsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const songsPerPage = 10;
+
+  // ✅ Safety check: if album or songs is undefined
+  if (!album || !Array.isArray(album.songs)) {
+    return <p>Loading songs...</p>;
+  }
 
   const paginate = (pageNum) => {
     setCurrentPage(pageNum);
   };
 
-  let indexOfLastSong = currentPage * songsPerPage;
-  let indexOfFirstSong = indexOfLastSong - songsPerPage;
-  let currentSongs = album.songs.slice(indexOfFirstSong, indexOfLastSong);
+  const indexOfLastSong = currentPage * songsPerPage;
+  const indexOfFirstSong = indexOfLastSong - songsPerPage;
+  const currentSongs = album.songs.slice(indexOfFirstSong, indexOfLastSong);
 
   return (
     <div>
@@ -51,9 +57,11 @@ function SongsTable({ album }) {
           </TableHead>
           <TableBody>
             {currentSongs.map((song) => {
-              let mins = Math.floor(song.durationInMs / 60000);
-              let sec = Math.floor((song.durationInMs % 60000) / 1000);
-              let duration = `${mins}:${sec}`;
+              const mins = Math.floor(song.durationInMs / 60000);
+              const sec = Math.floor((song.durationInMs % 60000) / 1000)
+                .toString()
+                .padStart(2, "0");
+              const duration = `${mins}:${sec}`;
               return (
                 <TableRow key={song.id}>
                   <TableCell className={styles.rowData}>
@@ -65,7 +73,9 @@ function SongsTable({ album }) {
                     </div>
                   </TableCell>
                   <TableCell className={styles.rowData}>
-                    {song.artists.join(", ")}{" "}
+                    {Array.isArray(song.artists)
+                      ? song.artists.join(", ")
+                      : "Unknown"}
                   </TableCell>
                   <TableCell className={styles.rowData}>{duration}</TableCell>
                 </TableRow>
